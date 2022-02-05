@@ -7,9 +7,9 @@ VALUES
 ('Engineering'),
 ('Finance'),
 ('Legal');
-('Customer Support')
+('Customer Support');
 
-INSERT INTO role 
+INSERT INTO role
     (title, salary, department_id)
 VALUES
 ('Sales Manager', 120000, 1),
