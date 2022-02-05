@@ -80,7 +80,7 @@ function startSearch() {
                             type:"input",
                             message:"What is the employee's fitst name?",
                             validate: answer => {
-                                if (answer==!""){
+                                if (answer!==""){
                                     return true
                                 }
 
@@ -93,7 +93,7 @@ function startSearch() {
                              type:"input",
                              message:" What is the employee's last name?",
                              validate: answer => {
-                                if (answer==!""){
+                                if (answer!==""){
                                      return true
                                     }
 
@@ -156,7 +156,7 @@ function startSearch() {
                             type:"input",
                             message:"What is the role title.",
                             validate: answer => {
-                                if (answer==!""){
+                                if (answer!== ""){
                                     return true
                                 }
                                 return "Please enter at least one character.";
@@ -261,7 +261,7 @@ function startSearch() {
 // View everyone function
 function byEmployees() {
 
-    var results = connection.query("SELECT employee.id, employee.first_name, employee.last_name, department.d_name AS department, role.salary,CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;",
+    var results = connection.query("SELECT employee.id, employee.first_name, employee.last_name, department.d_name AS department,roles.salary,CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN roles on employee.role_id = roles.id LEFT JOIN department on roles.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;",
         
         function (error, results) {
             if (error) throw error
@@ -273,7 +273,7 @@ function byEmployees() {
 
 function byDepartment() {
 
-    var results = connection.query("SELECT employee.id, employee.first_name, employee.last_name, department.d_name FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id WHERE department.id;",
+    var results = connection.query("SELECT employee.id, employee.first_name, employee.last_name, department.d_name FROM employee LEFT JOIN roles on employee.role_id = roles.id LEFT JOIN department on roles.department_id = department.id WHERE department.id;",
         
         function (error, results) {
             if (error) throw error
@@ -285,7 +285,7 @@ function byDepartment() {
 // View Managers function
         function byManager() {
 
-            var manager = connection.query("SELECT employee.id, employee.first_name, employee.last_name, department.d_name, employee.manager_id AS department, role.title FROM employee LEFT JOIN role on role.id = employee.role_id LEFT JOIN department ON department.id = role.department_id WHERE manager_id;",
+            var manager = connection.query("SELECT employee.id, employee.first_name, employee.last_name, department.d_name, employee.manager_id AS department, roles.title FROM employee LEFT JOIN roles on roles.id = employee.role_id LEFT JOIN department ON department.id = roles.department_id WHERE manager_id;",
         
         
                 function (error, manager) {
@@ -347,7 +347,7 @@ function addDepartment() {
 
 function roleTable() {
     var roleT = connection.query(
-        "SELECT title, salary, department_id FROM role;",
+        "SELECT title, salary, department_id FROM roles;",
 
     function (error, roleT) {
         if (error) throw error
@@ -359,7 +359,7 @@ function roleTable() {
 
 function addRole(title, salary, department_id) {
     var newRole = connection.query(
-        "INSERT INTO role SET title = ?, salary = ?, department_id =?",
+        "INSERT INTO roles SET title = ?, salary = ?, department_id =?",
         [title, salary,department_id],
     function (error, newRole) {
         if (error) throw error

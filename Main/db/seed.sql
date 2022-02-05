@@ -1,4 +1,4 @@
-USE employee_tracker
+USE employee_tracker;
 
 INSERT INTO department
     (d_name)
@@ -9,7 +9,7 @@ VALUES
 ('Legal');
 ('Customer Support');
 
-INSERT INTO role
+INSERT INTO roles
     (title, salary, department_id)
 VALUES
 ('Sales Manager', 120000, 1),
@@ -26,6 +26,7 @@ VALUES
 
 INSERT INTO employee
     (first_name, last_name, role_id, manager_id)
+VALUES
 ('Sarah', 'Parker', 1, NULL),
 ('Justin', 'Robinson', 2, 2),
 ('Kenya', 'Shoemaker', 3, NULL),
