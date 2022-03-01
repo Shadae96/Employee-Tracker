@@ -5,10 +5,10 @@ USE employee_tracker;
 
 CREATE TABLE department (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  d_name VARCHAR(30)
+  name VARCHAR(30)
 );
 
-CREATE TABLE roles (
+CREATE TABLE role (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(30) NOT NULL,
   salary DECIMAL UNSIGNED NOT NULL,
@@ -18,13 +18,14 @@ CREATE TABLE roles (
 );
 
 CREATE TABLE employee (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
   role_id INT UNSIGNED NOT NULL,
-  department_id INT NOT NULL,
-  manager_id  INT NOT NULL,
-  FOREIGN KEY(department_id) REFERENCES department(id),
-  FOREIGN KEY(role_id) REFERENCES roles(id),
-  FOREIGN KEY (manager_id) REFERENCES employee(id) ON DELETE SET NULL
+ INDEX role_ind (role_id),
+  CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE,
+  manager_id INT UNSIGNED,
+  INDEX man_ind (manager_id),
+  CONSTRAINT fk_manager FOREIGN KEY (manager_id) REFERENCES employee(id) ON DELETE SET NULL
+ 
 );

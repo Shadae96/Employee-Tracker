@@ -6,10 +6,14 @@ const cTable = require("console.table");
 const config = require ('./package.json');
 const express = require ('express');
 const e = require("express");
+// const logo = require('asciiart-logo');
+// console.log(logo(config).render());
+
 
 const connection = mysql.createConnection({
     host:'localhost',
     user:'root',
+    port:3306,
     password:'',
     database:'employee_tracker',
 });
@@ -17,21 +21,21 @@ const connection = mysql.createConnection({
 connection.connect((err) => {
     if (err){
         console.log(err);
+        res.status(500)
+        return res.send("There was an error connecting to the database");
     }
     console.log("You are connected to MySQL");
 
-});
+// const PORT = process.env.PORT || 3000
 
-const PORT = process.env.PORT || 3306;
+// const app = express();
 
-const app = express();
+// app.listen(PORT, () => { 
+//     console.log (`Server is listening on ${PORT}`);
 
-app.listen(PORT, () => { 
-    console.log (`Server is listening on ${PORT}`);
+startSearch();
 
-startSearch()
-
-});
+})
 
 connection.query = util.promisify(connection.query);
 
@@ -52,9 +56,7 @@ function startSearch() {
                 "Update employee role",
                 "Update employee manager",
             ]
-        })
-
-        .then( answers => {
+        }).then(answers => {
             switch (answers.action){
                 case "View all employees":
                     byEmployees();
@@ -80,8 +82,8 @@ function startSearch() {
                             type:"input",
                             message:"What is the employee's fitst name?",
                             validate: answer => {
-                                if (answer!==""){
-                                    return true
+                                if (answer !== "") {
+                                    return true;
                                 }
 
                                 return "Please enter at least one character.";
@@ -91,10 +93,10 @@ function startSearch() {
                         {
                              name:"employeeLast",
                              type:"input",
-                             message:" What is the employee's last name?",
+                             message: "What is the employee's last name?",
                              validate: answer => {
-                                if (answer!==""){
-                                     return true
+                                if (answer !== "") {
+                                     return true;
                                     }
 
                                     return "Please enter at least one character.";
@@ -120,7 +122,7 @@ function startSearch() {
                     ])
 
                         .then (answers => {
-                            addEmployee(answers.employeeFirst, answer.employeeLast, answers.department, answers.manager);
+                            addEmployee(answers.employeeFirst, answers.employeeLast, answers.department, answers.manager);
                             startSearch();
                             })  
                             break;
@@ -261,7 +263,7 @@ function startSearch() {
 // View everyone function
 function byEmployees() {
 
-    var results = connection.query("SELECT employee.id, employee.first_name, employee.last_name, department.d_name AS department,roles.salary,CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN roles on employee.role_id = roles.id LEFT JOIN department on roles.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;",
+    var results = connection.query("SELECT employee.id, employee.first_name, employee.last_name, department.name AS department,role.salary,CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;",
         
         function (error, results) {
             if (error) throw error
@@ -273,7 +275,7 @@ function byEmployees() {
 
 function byDepartment() {
 
-    var results = connection.query("SELECT employee.id, employee.first_name, employee.last_name, department.d_name FROM employee LEFT JOIN roles on employee.role_id = roles.id LEFT JOIN department on roles.department_id = department.id WHERE department.id;",
+    var results = connection.query("SELECT employee.id, employee.first_name, employee.last_name, department.name FROM employee LEFT JOIN roles on employee.role_id = roles.id LEFT JOIN department on role.department_id = department.id WHERE department.id;",
         
         function (error, results) {
             if (error) throw error
@@ -285,7 +287,7 @@ function byDepartment() {
 // View Managers function
         function byManager() {
 
-            var manager = connection.query("SELECT employee.id, employee.first_name, employee.last_name, department.d_name, employee.manager_id AS department, roles.title FROM employee LEFT JOIN roles on roles.id = employee.role_id LEFT JOIN department ON department.id = roles.department_id WHERE manager_id;",
+            var manager = connection.query("SELECT employee.id, employee.first_name, employee.last_name, department.name, employee.manager_id AS department, role.title FROM employee LEFT JOIN role on role.id = employee.role_id LEFT JOIN department ON department.id = role.department_id WHERE manager_id;",
         
         
                 function (error, manager) {
@@ -325,7 +327,7 @@ function addDepartment(employeeFirst,employeeLast, department, manager){
 
 // function to show departments
 function departmentTable() {
-    var depTable = connection.query ("SELECT d_name FROM department;",
+    var depTable = connection.query ("SELECT name FROM department;",
     
     function (error, depTable) {
         if (error) throw error
@@ -333,9 +335,9 @@ function departmentTable() {
 }
 
 // Function to create a new department
-function addDepartment() {
+function addDepartment(department) {
     var department = connection.query(
-        "INSERT INTO department SET d_name = ?",[department],
+        "INSERT INTO department SET name = ?",[department],
     
     function (error, department) {
         if (error) throw error
@@ -346,8 +348,7 @@ function addDepartment() {
 // Function to show role without including employees
 
 function roleTable() {
-    var roleT = connection.query(
-        "SELECT title, salary, department_id FROM roles;",
+    var roleT = connection.query("SELECT title, salary, department_id FROM role;",
 
     function (error, roleT) {
         if (error) throw error
@@ -359,7 +360,7 @@ function roleTable() {
 
 function addRole(title, salary, department_id) {
     var newRole = connection.query(
-        "INSERT INTO roles SET title = ?, salary = ?, department_id =?",
+        "INSERT INTO role SET title = ?, salary = ?, department_id =?",
         [title, salary,department_id],
     function (error, newRole) {
         if (error) throw error
@@ -382,11 +383,10 @@ function removeEmployee(id) {
 
 // "Update employee role"
 function updateByRole (employeeID, roleId){
-    var byRole = connect.query("UPDATE employee SET role_id = ? WHERE id = ?",
+    var byRole = connection.query("UPDATE employee SET role_id = ? WHERE id = ?",
     [roleId, employeeId],
     function (error, role){
         if (error) throw error
     })
     byDepartment();
 }
-
