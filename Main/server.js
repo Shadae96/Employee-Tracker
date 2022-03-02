@@ -136,8 +136,8 @@ function startSearch() {
                             type:"input",
                             message:" What is the name of the new department?",
                             validate: answer => {
-                                if (answer==!""){
-                                    return true
+                                if (answer !== ""){
+                                    return true;
                                 }
 
                                 return "Please enter at least one character.";
@@ -159,7 +159,7 @@ function startSearch() {
                             message:"What is the role title.",
                             validate: answer => {
                                 if (answer!== ""){
-                                    return true
+                                    return true;
                                 }
                                 return "Please enter at least one character.";
                                     }
@@ -194,11 +194,11 @@ function startSearch() {
                             {
                                 name:"id",
                                 type:"input",
-                                message:"What the enter the Employee id",
+                                message:"Please enter the Employee id",
            
-                            },
+                            }
                         ])
-                        .then (answers => {
+                        .then(answers => {
                             removeEmployee(answers.id);
                             startSearch();
                         })
@@ -210,14 +210,14 @@ function startSearch() {
                              inquirer
                              .prompt([
                                     {
-                                        name:"employeeID",
+                                        name:"employeeId",
                                         type:"input",
                                         message:"Please enter employee's id",
                             
                                     },
 
                                     {
-                                        name:"roleID",
+                                        name:"roleId",
                                         type:"input",
                                         message:"Please enter the role's id",
                             
@@ -313,15 +313,17 @@ function updateByManager(managerId, employeeId) {
 
 // Function to add a new employee
 
-function addDepartment(employeeFirst,employeeLast, department, manager){
+
+function addEmployee(employeeFirst, employeeLast, department, manager) {
 
     var add = connection.query(
-        "INSERT INTO employee SET first_name = ?, last_name = /, role_id = /, manager_id =?",
-        [employeeFirst,employeeLast, department, manager],
+        "INSERT INTO employee SET first_name = ?, last_name = ?, role_id = ?, manager_id = ?",
+        [employeeFirst, employeeLast, department, manager],
         function (error, add) {
             if (error) throw error
         })
-        byEmployees();
+
+    byEmployees();
 }
 
 
@@ -336,12 +338,15 @@ function departmentTable() {
 
 // Function to create a new department
 function addDepartment(department) {
+
     var department = connection.query(
-        "INSERT INTO department SET name = ?",[department],
-    
-    function (error, department) {
-        if (error) throw error
-    })
+        "INSERT INTO department SET name = ?",
+        [department],
+        function (error, department) {
+            if (error) throw error
+            // console.table(manager)
+        })
+
     departmentTable();
 }
 
@@ -362,8 +367,8 @@ function addRole(title, salary, department_id) {
     var newRole = connection.query(
         "INSERT INTO role SET title = ?, salary = ?, department_id =?",
         [title, salary,department_id],
-    function (error, newRole) {
-        if (error) throw error
+        function (error, newRole) {
+            if (error) throw error
         // console.table (manager)
     })
     roleTable();
@@ -372,7 +377,7 @@ function addRole(title, salary, department_id) {
 // Function to remove Employee
 
 function removeEmployee(id) {
-    var add= connection.query(
+    var add = connection.query(
         "DELETE FROM employee WHERE id = ?", 
         [id],
     function (error, id) {
@@ -382,7 +387,7 @@ function removeEmployee(id) {
 }
 
 // "Update employee role"
-function updateByRole (employeeID, roleId){
+function updateByRole (employeeId, roleId){
     var byRole = connection.query("UPDATE employee SET role_id = ? WHERE id = ?",
     [roleId, employeeId],
     function (error, role){
