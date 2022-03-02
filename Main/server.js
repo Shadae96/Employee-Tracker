@@ -275,7 +275,7 @@ function byEmployees() {
 
 function byDepartment() {
 
-    var results = connection.query("SELECT employee.id, employee.first_name, employee.last_name, department.name FROM employee LEFT JOIN roles on employee.role_id = roles.id LEFT JOIN department on role.department_id = department.id WHERE department.id;",
+    var results = connection.query("SELECT employee.id, employee.first_name, employee.last_name, department.name FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id WHERE department.id;",
         
         function (error, results) {
             if (error) throw error
