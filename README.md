@@ -1,7 +1,8 @@
-# title Employee Tracker
+# Employee Tracking System
   
   ## Descritpion
-  This project emphasizes the use of using MySql with Inquirer, NodeJs, console.table and several npm and json packages to render an employee traking app
+  This applicatio is a command-line employee tracker that is designed to assist a companies with management of their employee database. This app relies primarily on Node.js, Inquirer and MySQL.
+
   ## Table of Contents
   * [ Description](#description)
   * [ Installation](#installation)
@@ -11,18 +12,25 @@
   * [ Tests](#tests)
   * [ Questions](#questions)
   
-  ## Installation
-  This app is can be ran in the terminal
-  ## Usage
-  Use this app is the terminal by intializing node index.js
+  ## Technology
+  -Javascript
+  -SQL
+  -MySQL2
+  -Inquirer NPM
+  -Node.js
+  -MySQL Workbench
+  -Console.Table
+
+  ## Demo Video
+  https://drive.google.com/file/d/1sIe7JDFJSu84ULArC7Qs8FJYwZD78GeG/view
+
+
   ## License
   MIT
+
   ## Contributions
   Shadae Brown
-  ## Testing
-  No testing necessary
-  ## Questions
 
-
-  for additional question you can contact me here:
- #### Github:[github.com/shadaeamoy@gmail.com].Github}](http://github.com/shadaeamoy@gmail.com))
+  ## Questions for additional question you can contact me here:
+  Github:github.com/shadae96 
+  email: shadaeamoy@gmail.com
