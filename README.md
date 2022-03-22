@@ -1,15 +1,14 @@
 # Employee Tracking System
   
   ## Descritpion
-  This applicatio is a command-line employee tracker that is designed to assist a companies with management of their employee database. This app relies primarily on Node.js, Inquirer and MySQL.
+  This application is a command-line employee tracker that is designed to assist companies with management of their employee database. This app relies primarily on Node.js, Inquirer and MySQL.
 
   ## Table of Contents
   * [ Description](#description)
-  * [ Installation](#installation)
-  * [ Usage](#usage)
+  * [ Technology](#technology)
+  * [ Demo Video](#DemoVideo)
   * [ License](#license)
   * [ Contributing](#contribution)
-  * [ Tests](#tests)
   * [ Questions](#questions)
   
   ## Technology
